@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import useAuth from "./store/useAuth";
 
 import Login from "./pages/Auth/Login";
 import SignUp from "./pages/Auth/SignUp";
@@ -7,17 +9,23 @@ import Expense from "./pages/Dashboard/Expense";
 import Income from "./pages/Dashboard/Income";
 
 const App = () => {
+    const { isAuthenticated, checkAuth } = useAuth();
+
+    useEffect(() => {
+        checkAuth();
+    }, []);
+
     return (
         <div>
             <Router>
                 <Routes>
-                    <Route path="/" element={<Root/>}></Route>
-                    <Route path="/login" element={<Login/>}></Route>
-                    <Route path="/signup" element={<SignUp/>}></Route>
+                    <Route path="/" element={isAuthenticated ? <Navigate to="/dashboard" /> : <Navigate to="/login" />} />
+                    <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />} />
+                    <Route path="/signup" element={!isAuthenticated ? <SignUp /> : <Navigate to="/dashboard" />} />
                     <Route
                         path="/dashboard"
                         elment={
-                            <ProtectedRoute>
+                            <ProtectedRoute isAuthenticated = {isAuthenticated}>
                                 <Home/>
                             </ProtectedRoute>
                         }
@@ -25,7 +33,7 @@ const App = () => {
                     <Route
                         path="/income"
                         elment={
-                            <ProtectedRoute>
+                            <ProtectedRoute isAuthenticated = {isAuthenticated}>
                                 <Income/>
                             </ProtectedRoute>
                         }
@@ -33,7 +41,7 @@ const App = () => {
                     <Route
                         path="/expense"
                         elment={
-                            <ProtectedRoute>
+                            <ProtectedRoute isAuthenticated = {isAuthenticated}>
                                 <Expense/>
                             </ProtectedRoute>
                         }
@@ -44,16 +52,9 @@ const App = () => {
     )
 }
 
-export default App;
-
-// Check if token exists in localStorage
-const isAuthenticated = !!localStorage.getItem("token");
-
-const Root = () => {
-    // Redirect to dashboard if authenticated, otherwise to login
-    return isAuthenticated ? (<Navigate to="/dashboard"/>) : (<Navigate to="/login"/>);
-};
-
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({isAuthenticated, children }) => {
     return isAuthenticated ? children : <Navigate to="/login"/>;
 }
+
+export default App;
+
