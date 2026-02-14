@@ -3,12 +3,12 @@ import useAuth from "../store/useAuth";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-const axiosIncetance = axios.create({
+const api = axios.create({
     baseURL: BASE_URL,
     withCredentials: true
 });
 
-axiosIncetance.interceptors.request.use(
+api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
         
@@ -24,7 +24,7 @@ axiosIncetance.interceptors.request.use(
     }
 );
 
-axiosIncetance.interceptors.response.use(
+api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config();
@@ -39,7 +39,7 @@ axiosIncetance.interceptors.response.use(
 
                 originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
 
-                return axiosIncetance(originalRequest);
+                return api(originalRequest);
             } catch (error) {
                 useAuth.getState().logout();
                 return Promise.reject(error);
@@ -50,4 +50,4 @@ axiosIncetance.interceptors.response.use(
     }
 );
 
-export default axiosIncetance;
+export default api;
