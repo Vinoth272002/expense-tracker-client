@@ -24,7 +24,7 @@ const App = () => {
                     <Route path="/signup" element={!isAuthenticated ? <SignUp /> : <Navigate to="/dashboard" />} />
                     <Route
                         path="/dashboard"
-                        elment={
+                        element={
                             <ProtectedRoute isAuthenticated = {isAuthenticated}>
                                 <Home/>
                             </ProtectedRoute>
@@ -32,7 +32,7 @@ const App = () => {
                     />
                     <Route
                         path="/income"
-                        elment={
+                        element={
                             <ProtectedRoute isAuthenticated = {isAuthenticated}>
                                 <Income/>
                             </ProtectedRoute>
@@ -40,7 +40,7 @@ const App = () => {
                     />
                     <Route
                         path="/expense"
-                        elment={
+                        element={
                             <ProtectedRoute isAuthenticated = {isAuthenticated}>
                                 <Expense/>
                             </ProtectedRoute>
@@ -52,7 +52,7 @@ const App = () => {
     )
 }
 
-const ProtectedRoute = ({isAuthenticated, children }) => {
+const ProtectedRoute = ({ isAuthenticated, children }) => {
     return isAuthenticated ? children : <Navigate to="/login"/>;
 }
 
