@@ -5,12 +5,12 @@ const uploadImage = async (file) => {
     formData.append("image", file);
 
     try {
-        const UPLOAD_URL = "/upload-file";
+        let UPLOAD_URL = `http://localhost:8080/api/upload-file`;
 
-        // if (api.defaults.baseURL) {
-        //     const baseUrlWithoutVersion = api.defaults.baseURL.replace("/v1", "");
-        //     uploadUrl = `${baseUrlWithoutVersion}/upload-file`;
-        // }
+        if (api.defaults.baseURL) {
+            const baseUrlWithoutVersion = api.defaults.baseURL.replace("/v1", "");
+            UPLOAD_URL = `${baseUrlWithoutVersion}upload-file`;
+        }
 
         const response = await api.post(UPLOAD_URL, formData, {
             headers: {
