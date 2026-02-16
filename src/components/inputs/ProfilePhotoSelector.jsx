@@ -40,7 +40,7 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
                     </div>
                 ) : (
                     <div className="relative group">
-                        <img src={ previewUrl } alt="Profile photo" className="w-20 h-20 rounded-full cursor-pointer object-cover" onClick={ onChooseFile }/>
+                        <img src={ previewUrl } alt="Profile photo" className="w-20 h-20 rounded-full cursor-pointer object-cover border-3 border-[#e7e8eb]" onClick={ onChooseFile }/>
                         <button type="button" className="w-8 h-8 flex items-center justify-center cursor-pointer bg-red-500 text-white rounded-full absolute -bottom-1 -right-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200" onClick={ handleRemoveImage }>
                             <LuTrash/>
                         </button>
