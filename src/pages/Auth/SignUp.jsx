@@ -38,14 +38,15 @@ const SignUp = () => {
         setError("");
 
         try {
-            let profilePicUrl = "";
-
+            const formData = new FormData();
+            formData.append("fullName", fullName);
+            formData.append("email", email);
+            formData.append("password", password);
             if (profilePic) {
-                const imageUploadRes = await uploadImage(profilePic);
-                profilePicUrl = imageUploadRes.imageUrl || "";
+                formData.append("profilePic", profilePic);
             }
 
-            await signup({ fullName, email, password, profilePicUrl: profilePicUrl });
+            await signup(formData);
             navigate("/dashboard");
         } catch (error) {
             if (error.response?.message) {
@@ -66,11 +67,11 @@ const SignUp = () => {
                     <ProfilePhotoSelector image={profilePic} setImage={setProfilePic}></ProfilePhotoSelector>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <Input value={fullName} onChange={({ target }) => setFullName(target.value)} label="Full Name" placeholder="Tracker" type="text"></Input>
-                        <Input value={email} onChange={({ target }) => setEmail(target.value)} label="Email" placeholder="expensetracker@gmail.com" type="text"></Input>
+                        <Input value={fullName} onChange={({ target }) => setFullName(target.value)} label="Full Name" placeholder="Full name" type="text"></Input>
+                        <Input value={email} onChange={({ target }) => setEmail(target.value)} label="Email" placeholder="expensetracker@gmail.com" type="text" autoComplete="username"></Input>
 
                         <div className="col-span-2">
-                            <Input value={password} onChange={({ target }) => setPassword(target.value)} label="Password" placeholder="Min 8 charecters" type="password"></Input>
+                            <Input value={password} onChange={({ target }) => setPassword(target.value)} label="Password" placeholder="Min 8 charecters" type="password" autoComplete="current-password"></Input>
                         </div>
                     </div>
 
